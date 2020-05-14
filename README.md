@@ -9,10 +9,10 @@ jdk8
 
 ## Interface & Usage
 
-/upload
+**/upload**
 
-import template，you can get a default template in */template/exportAcceptanceFormalSorce.doc*
+import template，you can get a default template in **/template/exportAcceptanceFormalSorce.doc**
 
-/export
+**/export**
 
-export word, default out word in */word*
+export word, default out word in **/word**
