@@ -3,7 +3,6 @@ package com.cr.visualtl.service.impl;
 import com.cr.visualtl.config.Constant;
 import com.cr.visualtl.model.ResponseTarget;
 import com.cr.visualtl.service.UploadTemplate;
-import com.cr.visualtl.util.CrFileUtils;
 import com.cr.visualtl.util.fwt.FreemarkerWordTemplateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,17 +32,19 @@ public class UploadTemplateImpl implements UploadTemplate {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Map<String, String> dataMap = new HashMap<>();
-        dataMap.put("test1", "<w:r><w:t><#if (1>0)>\\${(scoreList_item2)!}</#if></w:t></w:r>");
-        File  docTemplate = new File(templateFilePath);
-        // 解析为Freemarker模板
-        String docText;
-        docText = FreemarkerWordTemplateUtils.word2ftl(dataMap, docTemplate);
-        // 存储Freemarker模板
-        boolean converted = CrFileUtils.convertText2file(docText, ftlTemplateFilePath);
-        if(converted){
-            return new ResponseTarget(true, "上传成功");
+        try (FileWriter fileWriter = new FileWriter(ftlTemplateFilePath)){
+            Map<String, String> dataMap = new HashMap<>();
+            dataMap.put("test1", "<w:r><w:t><#if (1>0)>\\${(scoreList_item2)!}</#if></w:t></w:r>");
+            File  docTemplate = new File(templateFilePath);
+            // 解析为Freemarker模板
+            String docText;
+            docText = FreemarkerWordTemplateUtils.doc2ftl(dataMap, new FileInputStream(docTemplate));
+            // 存储Freemarker模板
+            fileWriter.write(docText);
+            fileWriter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return new ResponseTarget(false, "上传失败");
+        return new ResponseTarget(true, "上传成功");
     }
 }

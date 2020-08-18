@@ -14,7 +14,7 @@ public class ExportWordController {
 
     @RequestMapping("/export")
     @ResponseBody
-    public ResponseTarget export(){
+    public ResponseTarget export() throws Exception{
         return exportWord.exportWord();
     }
 }

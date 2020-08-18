@@ -3,5 +3,5 @@ package com.cr.visualtl.service;
 import com.cr.visualtl.model.ResponseTarget;
 
 public interface ExportWord {
-    ResponseTarget exportWord();
+    ResponseTarget exportWord() throws Exception;
 }
