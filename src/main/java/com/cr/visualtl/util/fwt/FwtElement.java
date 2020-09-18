@@ -11,6 +11,12 @@ public class FwtElement {
     // 系统设定的字段值（Freemarker的代替字段）
     static final String CR_BLOCK_ = "crblock_";
 
+    // 时间字段
+    static final String CR_DATE_ = "crdate_";
+    // 默认时间格式
+    static final String DEFAULT_DATE_FORMAT = "d";
+    static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
+
     // 系统自定义标签1  Celll Level
     static final String CR_C_CELL_ = "cr_c_tc_";
 
@@ -47,18 +53,23 @@ public class FwtElement {
     // openxml匹配正则
     // 开始书签
     private static final String wordBookmarkStart = "<aml:annotation[\\s]*?aml:id=\"([\\d]+?)\"[\\s]*?w:type=\"Word.Bookmark.Start\"[^>]*?w:name=\"%s\"\\s*/>[^>]*?";
-    // 结束书签
-    private static final String wordBookmarkEnd = "<aml:annotation[^>]*?w:type=\"Word.Bookmark.End\"\\s*/>";
 
     // 普通字段
     private static final String generalBookmarkName = String.format("((?i)((?!%s)(.+?)))", CR_BLOCK_);
-    private static String generalField = String.format(wordBookmarkStart, generalBookmarkName)+ wordBookmarkEnd;
+    private static String generalField = String.format(wordBookmarkStart, generalBookmarkName);
     static final Pattern WORD_BOOKMARK_GENERAL_FIELD_PATTERN = Pattern.compile(generalField);
 
     // 系统固化块（if语法）
     private static String blockBookmarkName =  String.format("((?i)((?=%s)(.+?)))", CR_BLOCK_);
-    private static String blockField = String.format(wordBookmarkStart, blockBookmarkName)+ wordBookmarkEnd;
+    private static String blockField = String.format(wordBookmarkStart, blockBookmarkName);
     static final Pattern WORD_BOOKMARK_SYSTEM_BLOCK_PATTERN = Pattern.compile(blockField);
+
+    /**
+     * 格式化时间
+     */
+    private static String dateBookmarkName = String.format("((?i)((?=%s)([\\da-zA-Z_]+)))", CR_DATE_);
+    private static String dateField = String.format(wordBookmarkStart, dateBookmarkName);
+    static final Pattern WORD_DATE_PATTERN = Pattern.compile(dateField);
 
     // Cell Level
     private static String cellBookmarkName = String.format("((?i)((?=%s)(.+?)))", CR_C_CELL_);
